@@ -14,12 +14,14 @@ class CMakeInstallerConan(ConanFile):
     
     def config(self):
         if self.settings.os == "Macos" and self.settings.arch == "x86":
-            raise ConanException("Not supported x86 for OSx")
+            raise Exception("Not supported x86 for OSx")
+        if self.settings.os == "Linux" and self.options.version == "2.8.12" and self.settings.arch == "x86_64":
+            raise Exception("Not supported 2.8.12 for x86_64 binaries")
 
     def get_filename(self):
-        os = {"Macos": "Darwin", "Windows": "win32"}.get(self.settings.os, self.settings.os)
-        arch = {"x86": "i386"}.get(self.settings.arch, 
-                                   self.settings.arch) if self.settings.os != "Windows" else "x86"
+        os = {"Macos": "Darwin", "Windows": "win32"}.get(str(self.settings.os), str(self.settings.os))
+        arch = {"x86": "i386"}.get(str(self.settings.arch), 
+                                   str(self.settings.arch)) if self.settings.os != "Windows" else "x86"
         return "cmake-%s-%s-%s" % (self.options.version, os, arch)
     
     def build(self):
