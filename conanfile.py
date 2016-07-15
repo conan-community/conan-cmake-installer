@@ -29,8 +29,8 @@ class CMakeInstallerConan(ConanFile):
                                  self.settings.arch,
                                  str(self.options.version))
         minor = str(self.options.version)[0:3]
-
-        url = "https://cmake.org/files/v%s/%s.tar.gz" % (minor, self.get_filename())
+        ext = "tar.gz" if not self.settings.os == "Windows" else "zip"
+        url = "https://cmake.org/files/v%s/%s.%s" % (minor, self.get_filename(), ext)
 
 #       https://cmake.org/files/v3.6/cmake-3.6.0-Linux-i386.tar.gz
 #       https://cmake.org/files/v3.6/cmake-3.6.0-Darwin-x86_64.tar.gz
