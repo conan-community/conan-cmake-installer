@@ -11,17 +11,19 @@ class CMakeInstallerConan(ConanFile):
     options = {"version": ["3.6.0", "3.5.2", "3.4.3", "3.3.2", 
                            "3.2.3", "3.1.3", "3.0.2", "2.8.12"]}
     default_options = "version=3.6.0"
-    
+    build_policy = "missing"
+
+
     def config(self):
         if self.settings.os == "Macos" and self.settings.arch == "x86":
             raise Exception("Not supported x86 for OSx")
-        if self.settings.os == "Linux" and self.options.version == "2.8.12" and self.settings.arch == "x86_64":
-            raise Exception("Not supported 2.8.12 for x86_64 binaries")
 
     def get_filename(self):
         os = {"Macos": "Darwin", "Windows": "win32"}.get(str(self.settings.os), str(self.settings.os))
         arch = {"x86": "i386"}.get(str(self.settings.arch), 
                                    str(self.settings.arch)) if self.settings.os != "Windows" else "x86"
+        if self.settings.os == "Linux" and self.options.version == "2.8.12" and self.settings.arch == "x86_64":
+            arch = "i386"
         return "cmake-%s-%s-%s" % (self.options.version, os, arch)
     
     def build(self):
