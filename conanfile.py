@@ -12,8 +12,8 @@ class CMakeInstallerConan(ConanFile):
                            "3.2.3", "3.1.3", "3.0.2", "2.8.12"]}
     default_options = "version=3.6.0"
     build_policy = "missing"
-
-
+    
+    
     def config(self):
         if self.settings.os == "Macos" and self.settings.arch == "x86":
             raise Exception("Not supported x86 for OSx")
@@ -44,7 +44,10 @@ class CMakeInstallerConan(ConanFile):
         tools.unzip(dest_file)
     
     def package(self):
-        self.copy("*", dst="", src=self.get_filename())
+        if self.settings.os == "Macos":
+            self.copy("*", dst="", src=os.path.join(self.get_filename(), "CMake.app", "Contents"))
+        else:
+            self.copy("*", dst="", src=self.get_filename())
 
     def package_info(self):
         self.env_info.path.append(os.path.join(self.package_folder, "bin"))
