@@ -40,7 +40,7 @@ class CMakeInstallerConan(ConanFile):
 
         dest_file = "file.tgz" if self.settings.os != "Windows" else "file.zip"
         self.output.warn("Downloading: %s" % url)
-        tools.download(url, dest_file)
+        tools.download(url, dest_file, verify=False)
         tools.unzip(dest_file)
     
     def package(self):
