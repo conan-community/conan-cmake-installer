@@ -22,7 +22,7 @@ class CMakeInstallerConan(ConanFile):
         os = {"Macos": "Darwin", "Windows": "win32"}.get(str(self.settings.os), str(self.settings.os))
         arch = {"x86": "i386"}.get(str(self.settings.arch), 
                                    str(self.settings.arch)) if self.settings.os != "Windows" else "x86"
-        if self.settings.os == "Linux" and self.options.version == "2.8.12" and self.settings.arch == "x86_64":
+        if self.settings.os == "Linux" and self.options.version in ("2.8.12", "3.0.2") and self.settings.arch == "x86_64":
             arch = "i386"
         return "cmake-%s-%s-%s" % (self.options.version, os, arch)
     
