@@ -1,4 +1,4 @@
-from conans import ConanFile, CMake, tools, ConfigureEnvironment
+from conans import ConanFile, CMake, tools
 import os
 
 
@@ -8,7 +8,7 @@ class CMakeInstallerConan(ConanFile):
     license = "MIT"
     url = "http://github.com/lasote/conan-cmake-installer"
     settings = {"os": ["Windows", "Linux", "Macos"], "arch": ["x86", "x86_64"]}
-    options = {"version": ["3.6.0", "3.5.2", "3.4.3", "3.3.2", 
+    options = {"version": ["3.6.2", "3.6.1", "3.6.0", "3.5.2", "3.4.3", "3.3.2", 
                            "3.2.3", "3.1.3", "3.0.2", "2.8.12"]}
     default_options = "version=3.6.0"
     build_policy = "missing"
