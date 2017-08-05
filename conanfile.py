@@ -5,7 +5,7 @@ import conans
 class CMakeInstallerConan(conans.ConanFile):
     name = "cmake_installer"
     description = "creates cmake binaries package"
-    version = "0.1"
+    version = "0.2"
     license = "MIT"
     url = "http://github.com/lasote/conan-cmake-installer"
     settings = {"os": ["Windows", "Linux", "Macos"], "arch": ["x86", "x86_64"]}
