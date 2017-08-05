@@ -3,7 +3,7 @@ import conans
 
 class ConanFileInst(conans.ConanFile):
     name = "cmake_installer_test"
-    requires = "cmake_installer/0.1@demo/test_package"
+    requires = "cmake_installer/0.2@demo/test_package"
 
     def build(self):
         pass
