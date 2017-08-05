@@ -52,4 +52,5 @@ class CMakeInstallerConan(conans.ConanFile):
             self.copy("*", dst="", src=self.get_filename())
 
     def package_info(self):
-        self.env_info.path.append(os.path.join(self.package_folder, "bin"))
+        if not self.package_folder is None:
+            self.env_info.path.append(os.path.join(self.package_folder, "bin"))
