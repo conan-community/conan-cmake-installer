@@ -10,6 +10,6 @@ if __name__ == "__main__":
     builder = ConanMultiPackager()
     for version in available_versions:
         # Unknown problem with 3.0.2 on travis
-        if version <= "3.0.2" or platform.system() != "Linux":
+        if version > "3.0.2" or platform.system() != "Linux":
             builder.add({}, {"cmake_installer:version": version}, {}, {})
     builder.run()
