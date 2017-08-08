@@ -1,17 +1,14 @@
-import subprocess
+import StringIO
 import conans
 
+
 class ConanFileInst(conans.ConanFile):
-    name = "cmake_installer_test"
-    requires = "cmake_installer/0.2@demo/test_package"
 
     def build(self):
         pass
 
     def test(self):
-        try:
-            subprocess.check_output("cmake --version".split())
-        except FileNotFoundError as e:
-            self.output.error("%s package test failed" % self.name)
-        else:
-            self.output.success("%s package test passed" % self.name)
+        output = StringIO.StringIO()
+        self.run("cmake --version", output=output)
+        assert(str(self.options["cmake_installer"].version) in str(output.getvalue()))
+        self.output.info("Installed: %s" % str(output.getvalue()))
