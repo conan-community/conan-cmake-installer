@@ -57,3 +57,4 @@ class CMakeInstallerConan(ConanFile):
     def package_info(self):
         if not self.package_folder is None:
             self.env_info.path.append(os.path.join(self.package_folder, "bin"))
+            self.env_info.CMAKE_ROOT = self.package_folder
