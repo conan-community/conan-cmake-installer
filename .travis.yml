@@ -1,0 +1,33 @@
+env:
+   global:
+     - CONAN_REFERENCE: "cmake-installer/1.0"
+     - CONAN_USERNAME: "conan"
+     - CONAN_LOGIN_USERNAME: "lasote"
+     - CONAN_CHANNEL: "testing"
+     - CONAN_UPLOAD: "https://api.bintray.com/conan/conan-community/conan"
+     - CONAN_STABLE_BRANCH_PATTERN: "release/*"
+     - CONAN_UPLOAD_ONLY_WHEN_STABLE: 1 # Will only upload when the branch matches "release/*"
+
+linux: &linux
+   os: linux
+   sudo: required
+   language: python
+   python: "2.7.10"
+   services:
+     - docker
+osx: &osx
+   os: osx
+   language: generic
+matrix:
+   include:
+      - <<: *linux
+      - <<: *osx
+        osx_image: xcode8.3
+
+install:
+  - chmod +x .travis/install.sh
+  - ./.travis/install.sh
+
+script:
+  - chmod +x .travis/run.sh
+  - ./.travis/run.sh
