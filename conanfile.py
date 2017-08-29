@@ -55,6 +55,11 @@ class CMakeInstallerConan(ConanFile):
             self.copy("*", dst="", src=self.get_filename())
 
     def package_info(self):
-        if not self.package_folder is None:
+        if self.package_folder is not None:
             self.env_info.path.append(os.path.join(self.package_folder, "bin"))
             self.env_info.CMAKE_ROOT = self.package_folder
+            mod_path = os.path.join(self.package_folder, "share", "cmake-%s" % str(self.options.version)[0:3],
+                                    "Modules")
+            self.env_info.CMAKE_MODULE_PATH = mod_path
+            if not os.path.exists(mod_path):
+                raise Exception("Module path not found: %s" % mod_path)
