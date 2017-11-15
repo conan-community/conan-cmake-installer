@@ -19,7 +19,7 @@ class CMakeInstallerConan(ConanFile):
     options = {"version": available_versions}
     default_options = "version=3.9.0"
     build_policy = "missing"
-    
+
     def configure(self):
         if self.settings.os == "Macos" and self.settings.arch == "x86":
             raise Exception("Not supported x86 for OSx")
@@ -32,8 +32,10 @@ class CMakeInstallerConan(ConanFile):
         if self.settings.os == "Linux" and self.options.version in ("2.8.12", "3.0.2") and \
            self.settings.arch == "x86_64":
             arch_id = "i386"
+        if self.settings.os == "Macos" and self.options.version == "2.8.12":
+            arch_id = "universal"
         return "cmake-%s-%s-%s" % (self.options.version, os_id, arch_id)
-    
+
     def build(self):
         minor = str(self.options.version)[0:3]
         ext = "tar.gz" if not self.settings.os == "Windows" else "zip"
