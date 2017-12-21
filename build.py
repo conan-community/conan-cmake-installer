@@ -16,7 +16,7 @@ if __name__ == "__main__":
         # Unknown problem with 3.0.2 on travis
         if version > "3.0.2" or platform.system() == "Windows":
             builder.add({}, {}, {}, {})
-        builder.run()
+            builder.run()
 
     # Old mode, with options
     builder = ConanMultiPackager(reference="cmake_installer/1.0")
