@@ -1,5 +1,7 @@
 import os
 from conans import tools, ConanFile
+from conans import __version__ as conan_version
+from conans.model.version import Version
 
 available_versions = ["3.10.0", "3.9.0", "3.8.2",
                       "3.8.1", "3.8.0", "3.7.2", "3.7.1",
@@ -11,50 +13,70 @@ available_versions = ["3.10.0", "3.9.0", "3.8.2",
 class CMakeInstallerConan(ConanFile):
     name = "cmake_installer"
     description = "creates cmake binaries package"
-    version = "1.1"
     license = "OSI-approved BSD 3-clause"
     url = "http://github.com/lasote/conan-cmake-installer"
-    settings = {"os": ["Windows", "Linux", "Macos"],
-                "arch": ["x86", "x86_64"]}
+    if conan_version < Version("1.0.0"):
+        settings = {"os": ["Windows", "Linux", "Macos"],
+                    "arch": ["x86", "x86_64"]}
+    else:
+        settings = "os_build", "arch_build"
     options = {"version": available_versions}
     default_options = "version=" + available_versions[0]
     build_policy = "missing"
 
     def minor_version(self):
-        return ".".join(str(self.options.version).split(".")[:2])
+        return ".".join(str(self.cmake_version).split(".")[:2])
+
+    def config_options(self):
+        if self.version >= Version("2.8"):  # Means CMake version
+            self.options.remove("version")
 
     def configure(self):
-        if self.settings.os == "Macos" and self.settings.arch == "x86":
+        if self.os == "Macos" and self.arch == "x86":
             raise Exception("Not supported x86 for OSx")
 
+    @property
+    def arch(self):
+        return self.settings.get_safe("arch_build") or self.settings.get_safe("arch")
+
+    @property
+    def os(self):
+        return self.settings.get_safe("os_build") or self.settings.get_safe("os")
+
+    @property
+    def cmake_version(self):
+        if "version" in self.options:
+            return str(self.options.version)
+        else:
+            return self.version
+
     def get_filename(self):
-        arch = str(self.settings.arch)
-        os_id = {"Macos": "Darwin", "Windows": "win32"}.get(str(self.settings.os),
-                                                            str(self.settings.os))
-        arch_id = {"x86": "i386"}.get(arch, arch) if self.settings.os != "Windows" else "x86"
-        if self.settings.os == "Linux" and self.options.version in ("2.8.12", "3.0.2") and \
-           self.settings.arch == "x86_64":
+        os_id = {"Macos": "Darwin", "Windows": "win32"}.get(str(self.os),
+                                                            str(self.os))
+        arch_id = {"x86": "i386"}.get(self.arch, self.arch) if self.os != "Windows" else "x86"
+        if self.os == "Linux" and self.cmake_version in ("2.8.12", "3.0.2") and \
+           self.arch == "x86_64":
             arch_id = "i386"
-        if self.settings.os == "Macos" and self.options.version == "2.8.12":
+        if self.os == "Macos" and self.cmake_version == "2.8.12":
             arch_id = "universal"
-        return "cmake-%s-%s-%s" % (self.options.version, os_id, arch_id)
+        return "cmake-%s-%s-%s" % (self.cmake_version, os_id, arch_id)
 
     def build(self):
         minor = self.minor_version()
-        ext = "tar.gz" if not self.settings.os == "Windows" else "zip"
+        ext = "tar.gz" if not self.os == "Windows" else "zip"
         url = "https://cmake.org/files/v%s/%s.%s" % (minor, self.get_filename(), ext)
 
         # https://cmake.org/files/v3.6/cmake-3.6.0-Linux-i386.tar.gz
         # https://cmake.org/files/v3.6/cmake-3.6.0-Darwin-x86_64.tar.gz
         # https://cmake.org/files/v3.5/cmake-3.5.2-win32-x86.zip
 
-        dest_file = "file.tgz" if self.settings.os != "Windows" else "file.zip"
+        dest_file = "file.tgz" if self.os != "Windows" else "file.zip"
         self.output.info("Downloading: %s" % url)
         tools.download(url, dest_file, verify=False)
         tools.unzip(dest_file)
 
     def package(self):
-        if self.settings.os == "Macos":
+        if self.os == "Macos":
             self.copy("*", dst="", src=os.path.join(self.get_filename(), "CMake.app", "Contents"))
         else:
             self.copy("*", dst="", src=self.get_filename())

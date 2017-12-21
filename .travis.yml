@@ -1,6 +1,5 @@
 env:
    global:
-     - CONAN_REFERENCE: "cmake-installer/1.0"
      - CONAN_USERNAME: "conan"
      - CONAN_LOGIN_USERNAME: "lasote"
      - CONAN_CHANNEL: "testing"
@@ -22,7 +21,7 @@ matrix:
    include:
       - <<: *linux
       - <<: *osx
-        osx_image: xcode8.3
+        osx_image: xcode9
 
 install:
   - chmod +x .travis/install.sh
