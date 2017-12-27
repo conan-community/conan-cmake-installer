@@ -21,7 +21,11 @@ matrix:
    include:
       - <<: *linux
       - <<: *osx
-        osx_image: xcode9
+        osx_image: xcode9.2
+        env: CONAN_CURRENT_PAGE=1 CONAN_TOTAL_PAGES=2
+      - <<: *osx
+        osx_image: xcode9.2
+        env: CONAN_CURRENT_PAGE=2 CONAN_TOTAL_PAGES=2
 
 install:
   - chmod +x .travis/install.sh
