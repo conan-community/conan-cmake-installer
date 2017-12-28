@@ -17,7 +17,6 @@ if __name__ == "__main__":
         # Unknown problem with 3.0.2 on travis
         if version > "3.0.2" or platform.system() == "Windows":
             builder.add({}, {}, {}, {}, reference="cmake_installer/%s" % version)
-            builder.run()
 
     # Old mode, with options
     for version in available_versions:
