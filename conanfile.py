@@ -21,7 +21,7 @@ class CMakeInstallerConan(ConanFile):
     else:
         settings = "os_build", "arch_build"
     options = {"version": available_versions}
-    default_options = "version=3.10.0"
+    default_options = "version=" + [v for v in available_versions if "-" not in v][0]
     build_policy = "missing"
 
     def minor_version(self):
