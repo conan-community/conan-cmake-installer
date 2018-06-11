@@ -77,7 +77,8 @@ class CMakeInstallerConan(ConanFile):
 
     def package(self):
         if self.os == "Macos":
-            self.copy("*", dst="", src=os.path.join(self.get_filename(), "CMake.app", "Contents"))
+            appname = "CMake.app" if self.version != "2.8.12" else "CMake 2.8-12.app"
+            self.copy("*", dst="", src=os.path.join(self.get_filename(), appname, "Contents"))
         else:
             self.copy("*", dst="", src=self.get_filename())
 
