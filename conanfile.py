@@ -2,6 +2,7 @@ import os
 from conans import tools, ConanFile
 from conans import __version__ as conan_version
 from conans.model.version import Version
+from conans.errors import ConanException, NotFoundException
 
 available_versions = ["3.11.3", "3.11.2", "3.11.1", "3.10.0", "3.9.0", "3.8.2",
                       "3.8.1", "3.8.0", "3.7.2", "3.7.1",
@@ -61,19 +62,39 @@ class CMakeInstallerConan(ConanFile):
             arch_id = "universal"
         return "cmake-%s-%s-%s" % (self.cmake_version, os_id, arch_id)
 
+    def get_filename_src(self):
+        return "cmake-%s" % self.cmake_version
+
     def build(self):
         minor = self.minor_version()
         ext = "tar.gz" if not self.os == "Windows" else "zip"
-        url = "https://cmake.org/files/v%s/%s.%s" % (minor, self.get_filename(), ext)
-
-        # https://cmake.org/files/v3.6/cmake-3.6.0-Linux-i386.tar.gz
-        # https://cmake.org/files/v3.6/cmake-3.6.0-Darwin-x86_64.tar.gz
-        # https://cmake.org/files/v3.5/cmake-3.5.2-win32-x86.zip
-
         dest_file = "file.tgz" if self.os != "Windows" else "file.zip"
-        self.output.info("Downloading: %s" % url)
-        tools.download(url, dest_file, verify=False)
-        tools.unzip(dest_file)
+        try:
+            url = "https://cmake.org/files/v%s/%s.%s" % (minor, self.get_filename(), ext)
+
+            # https://cmake.org/files/v3.6/cmake-3.6.0-Linux-i386.tar.gz
+            # https://cmake.org/files/v3.6/cmake-3.6.0-Darwin-x86_64.tar.gz
+            # https://cmake.org/files/v3.5/cmake-3.5.2-win32-x86.zip
+
+            self.output.info("Downloading: %s" % url)
+            tools.download(url, dest_file, verify=False)
+            tools.unzip(dest_file)
+        except NotFoundException:
+            if self.settings.get_safe("os_build") == "Windows":
+                raise ConanException("Building from sources under Windows is not supported")
+
+            url = "https://cmake.org/files/v%s/%s.%s" % (minor, self.get_filename_src(), ext)
+
+            # https://cmake.org/files/v3.6/cmake-3.6.0.tar.gz
+
+            self.output.info("Downloading: %s" % url)
+            tools.download(url, dest_file, verify=False)
+            tools.unzip(dest_file)
+
+            with tools.chdir(self.get_filename_src()):
+                self.run("./bootstrap --prefix=%s" % os.path.join(self.build_folder, self.get_filename()))
+                self.run("make")
+                self.run("make install")
 
     def package(self):
         if self.os == "Macos":
