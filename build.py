@@ -1,3 +1,4 @@
+import os
 import platform
 
 from conan.packager import ConanMultiPackager
@@ -12,16 +13,23 @@ if __name__ == "__main__":
 
     builder = ConanMultiPackager()
 
+    i386 = "CONAN_DOCKER_IMAGE" in os.environ and \
+        os.environ["CONAN_DOCKER_IMAGE"].endswith("i386")
+
     # New mode, with version field
     for version in available_versions:
         # Unknown problem with 3.0.2 on travis
-        if version > "3.0.2" or platform.system() == "Windows":
+        # Building from sources takes much time so build the very recent 32bit version only
+        if (version > "3.0.2" and not i386) or platform.system() == "Windows" or \
+                version == available_versions[0]:
             builder.add({}, {}, {}, {}, reference="cmake_installer/%s" % version)
 
     # Old mode, with options
     for version in available_versions:
         # Unknown problem with 3.0.2 on travis
-        if version > "3.0.2" or platform.system() == "Windows":
+        # Building from sources takes much time so build the very recent 32bit version only
+        if (version > "3.0.2" and not i386) or platform.system() == "Windows" or \
+                version == available_versions[0]:
             builder.add({}, {"cmake_installer:version": version}, {}, {}, "cmake_installer/1.0")
 
     builder.run()
