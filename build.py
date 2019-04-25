@@ -4,7 +4,7 @@ import platform
 
 from conan.packager import ConanMultiPackager
 
-available_versions = ["3.14.2", "3.14.1", "3.14.0",
+available_versions = ["3.14.3", "3.14.2", "3.14.1", "3.14.0",
                       "3.13.4", "3.13.3", "3.13.2", "3.13.1", "3.13.0",
                       "3.12.4", "3.12.3", "3.12.2", "3.12.1", "3.12.0",
                       "3.11.3", "3.11.2", "3.11.1",
