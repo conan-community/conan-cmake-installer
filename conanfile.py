@@ -140,4 +140,4 @@ class CMakeInstallerConan(ConanFile):
             if not os.path.exists(mod_path):
                 raise ConanException("Module path not found: %s" % mod_path)
         else:
-            self.output.warn("No package folder was created.")
+            self.output.warn("No package folder have been created.")
