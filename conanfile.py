@@ -87,17 +87,21 @@ class CMakeInstallerConan(ConanFile):
         ext = "tar.gz" if not self._os == "Windows" else "zip"
         dest_file = "file.tgz" if self._os != "Windows" else "file.zip"
         unzip_folder = self._get_filename()
+
+        def download_cmake(url, dest_file, unzip_folder):
+            self.output.info("Downloading: %s" % url)
+            tools.get(url, filename=dest_file, verify=False)
+            os.rename(unzip_folder, self._source_subfolder)
+
         try:
             url = "https://cmake.org/files/v%s/%s.%s" % (minor, self._get_filename(), ext)
+            download_cmake(url, dest_file, unzip_folder)
         except NotFoundException:
             if self.settings.get_safe("os_build") == "Windows":
                 raise ConanInvalidConfiguration("Building from sources under Windows is not supported")
             url = "https://cmake.org/files/v%s/%s.%s" % (minor, self._get_filename_src(), ext)
             unzip_folder = self._get_filename_src()
-
-        self.output.info("Downloading: %s" % url)
-        tools.get(url, filename=dest_file, verify=False)
-        os.rename(unzip_folder, self._source_subfolder)
+            download_cmake(url, dest_file, unzip_folder)
 
     def _configure_cmake(self):
         cmake = CMake(self)
