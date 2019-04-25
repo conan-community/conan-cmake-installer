@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 from six import StringIO
-import conans
+from conans import ConanFile
 
 
-class ConanFileInst(conans.ConanFile):
+class ConanFileInst(ConanFile):
 
     def build(self):
         pass
@@ -11,8 +12,8 @@ class ConanFileInst(conans.ConanFile):
         output = StringIO()
         self.run("cmake --version", output=output)
         self.output.info("Installed: %s" % str(output.getvalue()))
-        if self.requires["cmake_installer"].conan_reference.version != "1.0":
-            ver = str(self.requires["cmake_installer"].conan_reference.version)
+        if self.requires["cmake_installer"].ref.version != "1.0":
+            ver = str(self.requires["cmake_installer"].ref.version)
         else:
             ver = str(self.options["cmake_installer"].version)
 
