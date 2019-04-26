@@ -1,9 +1,8 @@
-[![Build Status Travis](https://travis-ci.org/conan-community/conan-cmake_installer.svg)](https://travis-ci.org/conan-community/conan-cmake_installer)
-[![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/conan-community/conan-cmake_installer?svg=true)](https://ci.appveyor.com/project/ConanCIintegration/conan-cmake_installer)
+[![Download](https://api.bintray.com/packages/conan-community/conan/cmake_installer%3Aconan/images/download.svg) ](https://bintray.com/conan-community/conan/cmake_installer%3Aconan/_latestVersion)
+[![Build Status Travis](https://travis-ci.org/conan-community/conan-cmake-installer.svg)](https://travis-ci.org/conan-community/conan-cmake-installer)
+[![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/conan-community/conan-cmake-installer?svg=true)](https://ci.appveyor.com/project/ConanCIintegration/conan-cmake-installer)
 
 # Conan CMake Installer
-
-[Bintray conan-center](https://bintray.com/conan/conan-center?filterByPkgName=cmake_installer%3Aconan) package for installing CMake.
 
 ## Reference
 
