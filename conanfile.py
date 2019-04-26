@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import re
 from conans import tools, ConanFile, CMake
 from conans import __version__ as conan_version
 from conans.model.version import Version
@@ -82,7 +83,7 @@ class CMakeInstallerConan(ConanFile):
         if self._os == "Macos" and self._arch == "x86":
             raise ConanInvalidConfiguration("Not supported x86 for OSx")
 
-    def source(self):
+    def _download_source(self):
         minor = self._minor_version()
         ext = "tar.gz" if not self._os == "Windows" else "zip"
         dest_file = "file.tgz" if self._os != "Windows" else "file.zip"
@@ -110,6 +111,7 @@ class CMakeInstallerConan(ConanFile):
         return cmake
 
     def build(self):
+        self._download_source()
         if self._build_from_source():
             cmake = self._configure_cmake()
             cmake.build()
