@@ -15,7 +15,9 @@ matrix:
       - <<: *linux
         env: CONAN_CURRENT_PAGE=2 CONAN_TOTAL_PAGES=2
       - <<: *linux
-        env: CONAN_DOCKER_IMAGE=conanio/gcc7-centos6-x86
+        env: CONAN_DOCKER_IMAGE=conanio/gcc7-centos6-x86 CONAN_CURRENT_PAGE=1 CONAN_TOTAL_PAGES=2
+      - <<: *linux
+        env: CONAN_DOCKER_IMAGE=conanio/gcc7-centos6-x86 CONAN_CURRENT_PAGE=1 CONAN_TOTAL_PAGES=2
       - <<: *osx
         osx_image: xcode9.2
         env: CONAN_CURRENT_PAGE=1 CONAN_TOTAL_PAGES=2
