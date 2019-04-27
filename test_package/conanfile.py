@@ -1,19 +1,26 @@
+# -*- coding: utf-8 -*-
+import os
 from six import StringIO
-import conans
+from conans import ConanFile
 
 
-class ConanFileInst(conans.ConanFile):
+class ConanFileInst(ConanFile):
 
     def build(self):
         pass
 
     def test(self):
         output = StringIO()
-        self.run("cmake --version", output=output)
+        cmake_path = os.path.join(self.deps_cpp_info["cmake_installer"].rootpath, "bin", "cmake")
+        self.run("{} --version".format(cmake_path), output=output, run_environment=True)
         self.output.info("Installed: %s" % str(output.getvalue()))
-        if self.requires["cmake_installer"].conan_reference.version != "1.0":
-            ver = str(self.requires["cmake_installer"].conan_reference.version)
+        if self.requires["cmake_installer"].ref.version != "1.0":
+            ver = str(self.requires["cmake_installer"].ref.version)
         else:
             ver = str(self.options["cmake_installer"].version)
 
-        assert(ver in str(output.getvalue()))
+        value = str(output.getvalue())
+        cmake_version = value.split('\n')[0]
+        self.output.info("Expected value: {}".format(ver))
+        self.output.info("Detected value: {}".format(cmake_version))
+        assert(ver in cmake_version)

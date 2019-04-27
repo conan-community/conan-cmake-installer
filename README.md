@@ -1,9 +1,8 @@
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/lasote/conan-cmake-installer)](https://ci.appveyor.com/project/lasote/conan-cmake-installer)
+[![Download](https://api.bintray.com/packages/conan-community/conan/cmake_installer%3Aconan/images/download.svg) ](https://bintray.com/conan-community/conan/cmake_installer%3Aconan/_latestVersion)
+[![Build Status Travis](https://travis-ci.org/conan-community/conan-cmake-installer.svg)](https://travis-ci.org/conan-community/conan-cmake-installer)
+[![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/conan-community/conan-cmake-installer?svg=true)](https://ci.appveyor.com/project/ConanCIintegration/conan-cmake-installer)
 
-
-# conan-cmake-installer
-
-[Bintray conan-center](https://bintray.com/conan/conan-center?filterByPkgName=cmake_installer%3Aconan) package for installing CMake.
+# Conan CMake Installer
 
 ## Reference
 
@@ -18,7 +17,6 @@ The available versions are:
   This package is useful as a conan **build_require**, you can use it to build other packages using the CMake packages.
   This package will automatically configure your PATH, to point to the packaged CMake.
   Check: [http://docs.conan.io/en/latest/mastering/build_requires.html](http://docs.conan.io/en/latest/mastering/build_requires.html)
-  
-  
 
-  
+
+

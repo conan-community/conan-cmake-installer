@@ -1,17 +1,8 @@
-env:
-   global:
-     - CONAN_USERNAME: "conan"
-     - CONAN_LOGIN_USERNAME: "conanbot"
-     - CONAN_CHANNEL: "testing"
-     - CONAN_UPLOAD: "https://api.bintray.com/conan/conan-community/conan"
-     - CONAN_STABLE_BRANCH_PATTERN: "master"
-     - CONAN_UPLOAD_ONLY_WHEN_STABLE: 1 # Will only upload when the branch matches "master"
-
 linux: &linux
    os: linux
-   sudo: required
+   dist: xenial
    language: python
-   python: "2.7.10"
+   python: "3.7"
    services:
      - docker
 osx: &osx
@@ -24,7 +15,21 @@ matrix:
       - <<: *linux
         env: CONAN_CURRENT_PAGE=2 CONAN_TOTAL_PAGES=2
       - <<: *linux
-        env: CONAN_DOCKER_IMAGE=lasote/conangcc49-i386
+        env: CONAN_DOCKER_IMAGE=conanio/gcc7-centos6-x86 CONAN_CURRENT_PAGE=1 CONAN_TOTAL_PAGES=8
+      - <<: *linux
+        env: CONAN_DOCKER_IMAGE=conanio/gcc7-centos6-x86 CONAN_CURRENT_PAGE=2 CONAN_TOTAL_PAGES=8
+      - <<: *linux
+        env: CONAN_DOCKER_IMAGE=conanio/gcc7-centos6-x86 CONAN_CURRENT_PAGE=3 CONAN_TOTAL_PAGES=8
+      - <<: *linux
+        env: CONAN_DOCKER_IMAGE=conanio/gcc7-centos6-x86 CONAN_CURRENT_PAGE=4 CONAN_TOTAL_PAGES=8
+      - <<: *linux
+        env: CONAN_DOCKER_IMAGE=conanio/gcc7-centos6-x86 CONAN_CURRENT_PAGE=5 CONAN_TOTAL_PAGES=8
+      - <<: *linux
+        env: CONAN_DOCKER_IMAGE=conanio/gcc7-centos6-x86 CONAN_CURRENT_PAGE=6 CONAN_TOTAL_PAGES=8
+      - <<: *linux
+        env: CONAN_DOCKER_IMAGE=conanio/gcc7-centos6-x86 CONAN_CURRENT_PAGE=7 CONAN_TOTAL_PAGES=8
+      - <<: *linux
+        env: CONAN_DOCKER_IMAGE=conanio/gcc7-centos6-x86 CONAN_CURRENT_PAGE=8 CONAN_TOTAL_PAGES=8
       - <<: *osx
         osx_image: xcode9.2
         env: CONAN_CURRENT_PAGE=1 CONAN_TOTAL_PAGES=2
