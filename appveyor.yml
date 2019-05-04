@@ -3,6 +3,8 @@ build: false
 environment:
     PYTHON: "C:\\Python37"
     CONAN_UPLOAD_ONLY_WHEN_STABLE: 1
+    CONAN_CHANNEL: "stable"
+    CONAN_STABLE_BRANCH_PATTERN: "stable/*"
     CONAN_TOTAL_PAGES: 2
 
     matrix:
