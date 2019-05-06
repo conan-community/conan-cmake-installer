@@ -2,17 +2,17 @@ build: false
 
 environment:
     PYTHON: "C:\\Python37"
-    CONAN_UPLOAD_ONLY_WHEN_STABLE: 1
-    CONAN_CHANNEL: "stable"
-    CONAN_STABLE_BRANCH_PATTERN: "stable/*"
-    CONAN_TOTAL_PAGES: 2
 
     matrix:
 
         - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
           CONAN_CURRENT_PAGE: 1
+          CONAN_ARCHS: x86_64
+          CONAN_TOTAL_PAGES: 2
         - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
           CONAN_CURRENT_PAGE: 2
+          CONAN_ARCHS: x86_64
+          CONAN_TOTAL_PAGES: 2
 
 install:
   - set PATH=%PATH%;%PYTHON%/Scripts/

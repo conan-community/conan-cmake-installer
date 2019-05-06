@@ -82,6 +82,8 @@ class CMakeInstallerConan(ConanFile):
     def configure(self):
         if self._os == "Macos" and self._arch == "x86":
             raise ConanInvalidConfiguration("Not supported x86 for OSx")
+        elif self._os == "Windows" and self._arch == "x86":
+            raise ConanInvalidConfiguration("Not supported x86 for Windows")
 
     def _download_source(self):
         minor = self._minor_version()
