@@ -22,7 +22,7 @@ available_versions = ["3.14.3", "3.14.2", "3.14.1", "3.14.0",
                       "2.8.12"]
 
 if __name__ == "__main__":
-    arch = os.environ("CONAN_ARCHS")
+    arch = os.environ["CONAN_ARCHS"]
     builder = ConanMultiPackager()
 
     for version in available_versions:
