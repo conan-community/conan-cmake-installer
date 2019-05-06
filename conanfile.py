@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import re
 from conans import tools, ConanFile, CMake
 from conans import __version__ as conan_version
 from conans.model.version import Version
