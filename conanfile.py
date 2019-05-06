@@ -30,7 +30,7 @@ class CMakeInstallerConan(ConanFile):
     author = "Conan Community"
     homepage = "https://github.com/Kitware/CMake"
     topics = ("conan", "cmake", "build", "installer")
-    settings = "os_build", "arch_build", "compiler"
+    settings = "os_build", "arch_build", "compiler", "arch"
     options = {"version": available_versions}
     default_options = {"version": [v for v in available_versions if "-" not in v][0]}
     exports = "LICENSE"
@@ -118,6 +118,8 @@ class CMakeInstallerConan(ConanFile):
             cmake.build()
 
     def package_id(self):
+        self.info.include_build_settings()
+        del self.info.settings.arch
         del self.info.settings.compiler
 
     def package(self):
