@@ -30,7 +30,10 @@ class CMakeInstallerConan(ConanFile):
     author = "Conan Community"
     homepage = "https://github.com/Kitware/CMake"
     topics = ("conan", "cmake", "build", "installer")
-    settings = "os_build", "arch_build", "compiler", "arch"
+    settings = {"os_build": ["Windows", "Linux", "Macos"],
+                "arch_build": ["x86", "x86_64"],
+                "compiler": None,
+                "arch": None}
     options = {"version": available_versions}
     default_options = {"version": [v for v in available_versions if "-" not in v][0]}
     exports = "LICENSE"
@@ -81,8 +84,6 @@ class CMakeInstallerConan(ConanFile):
     def configure(self):
         if self._os == "Macos" and self._arch == "x86":
             raise ConanInvalidConfiguration("Not supported x86 for OSx")
-        elif self._os == "Windows" and self._arch == "x86":
-            raise ConanInvalidConfiguration("Not supported x86 for Windows")
 
     def _download_source(self):
         minor = self._minor_version()
@@ -119,6 +120,8 @@ class CMakeInstallerConan(ConanFile):
 
     def package_id(self):
         self.info.include_build_settings()
+        if self.settings.os == "Windows":
+            del self.info.settings.arch_build # same build is used for x86 and x86_64
         del self.info.settings.arch
         del self.info.settings.compiler
 
