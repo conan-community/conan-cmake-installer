@@ -112,6 +112,7 @@ class CMakeInstallerConan(ConanFile):
     def build(self):
         self._download_source()
         if self._build_from_source():
+            self.settings.arch = self.settings.arch_build  # workaround for cross-building to get the correct arch during the build
             cmake = self._configure_cmake()
             cmake.build()
 
