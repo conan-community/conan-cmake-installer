@@ -89,12 +89,12 @@ class CMakeInstallerConan(ConanFile):
         unzip_folder = self._get_filename()
 
         def download_cmake(url, dest_file, unzip_folder):
+            self.output.info("Downloading: %s" % url)
             tools.get(url, filename=dest_file, verify=False)
             os.rename(unzip_folder, self._source_subfolder)
 
         try:
             url = "https://cmake.org/files/v%s/%s.%s" % (minor, self._get_filename(), ext)
-            self.output.info("download url: %s" % url)
             download_cmake(url, dest_file, unzip_folder)
         except NotFoundException:
             if self.settings.get_safe("os_build") == "Windows":
