@@ -11,8 +11,12 @@ environment:
 
         - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
           CONAN_CURRENT_PAGE: 1
+          CONAN_ARCHS: x86_64
+          CONAN_TOTAL_PAGES: 2
         - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
           CONAN_CURRENT_PAGE: 2
+          CONAN_ARCHS: x86_64
+          CONAN_TOTAL_PAGES: 2
 
 install:
   - set PATH=%PATH%;%PYTHON%/Scripts/

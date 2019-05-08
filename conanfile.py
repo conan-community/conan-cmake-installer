@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import re
 from conans import tools, ConanFile, CMake
 from conans import __version__ as conan_version
 from conans.model.version import Version
@@ -113,12 +112,16 @@ class CMakeInstallerConan(ConanFile):
     def build(self):
         self._download_source()
         if self._build_from_source():
+            self.settings.arch = self.settings.arch_build  # workaround for cross-building to get the correct arch during the build
             cmake = self._configure_cmake()
             cmake.build()
 
     def package_id(self):
-        del self.info.settings.compiler
+        self.info.include_build_settings()
+        if self.settings.os_build == "Windows":
+            del self.info.settings.arch_build # same build is used for x86 and x86_64
         del self.info.settings.arch
+        del self.info.settings.compiler
 
     def package(self):
         if self._build_from_source():
@@ -127,7 +130,7 @@ class CMakeInstallerConan(ConanFile):
             cmake.install()
         else:
             if self._os == "Macos":
-                appname = "CMake.app" if self.version != "2.8.12" else "CMake 2.8-12.app"
+                appname = "CMake.app" if self._cmake_version != "2.8.12" else "CMake 2.8-12.app"
                 self.copy("*", dst="", src=os.path.join(self._source_subfolder, appname, "Contents"))
             else:
                 self.copy("*", dst="", src=self._source_subfolder)
