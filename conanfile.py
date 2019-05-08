@@ -87,14 +87,10 @@ class CMakeInstallerConan(ConanFile):
         ext = "tar.gz" if not self._os == "Windows" else "zip"
         dest_file = "file.tgz" if self._os != "Windows" else "file.zip"
         unzip_folder = self._get_filename()
-        self.output.info("unzip folder: %s" % unzip_folder)
 
         def download_cmake(url, dest_file, unzip_folder):
-            self.output.info("Downloading: %s" % url)
             tools.get(url, filename=dest_file, verify=False)
-            self.run('ls -lah "%s"' % unzip_folder)
             os.rename(unzip_folder, self._source_subfolder)
-            self.run('ls -lah "%s"' % self._source_subfolder)
 
         try:
             url = "https://cmake.org/files/v%s/%s.%s" % (minor, self._get_filename(), ext)
@@ -129,19 +125,13 @@ class CMakeInstallerConan(ConanFile):
 
     def package(self):
         if self._build_from_source():
-            self.output.info("build from source")
             self.copy("Copyright.txt", dst="licenses", src=self._source_subfolder)
             cmake = self._configure_cmake()
             cmake.install()
         else:
-            self.output.info("package prebuilt %s" % str(self._os))
             if self._os == "Macos":
-                appname = "CMake.app" if self.version != "2.8.12" else "CMake 2.8-12.app"
+                appname = "CMake.app" if self._cmake_version != "2.8.12" else "CMake 2.8-12.app"
                 self.copy("*", dst="", src=os.path.join(self._source_subfolder, appname, "Contents"))
-                self.run('ls -lah "%s"' % os.path.join(self.source_folder))
-                self.run('ls -lah "%s"' % os.path.join(self.source_folder, self._source_subfolder))
-                self.run('ls -lah "%s"' % os.path.join(self.source_folder, self._source_subfolder, appname))
-                self.run('ls -lah "%s"' % os.path.join(self.source_folder, self._source_subfolder, appname, "Contents"))
             else:
                 self.copy("*", dst="", src=self._source_subfolder)
                 self.copy("Copyright.txt", dst="licenses", src=os.path.join(self._source_subfolder, "doc", "cmake"))
