@@ -34,7 +34,7 @@ The available versions are:
 
   This package is useful as a conan **build_require**, you can use it to build other packages using the CMake packages.
   This package will automatically configure your PATH, to point to the packaged CMake.
-  Check: [http://docs.conan.io/en/latest/mastering/build_requires.html](http://docs.conan.io/en/latest/mastering/build_requires.html)
+  Check: [https://docs.conan.io/en/latest/devtools/build_requires.html](https://docs.conan.io/en/latest/devtools/build_requires.html)
 
 
 
