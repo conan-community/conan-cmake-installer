@@ -27,7 +27,7 @@ class CMakeInstallerConan(ConanFile):
     name = "cmake_installer"
     description = "creates cmake binaries package"
     license = "BSD-3-clause"
-    url = "http://github.com/conan-community/conan-cmake-installer"
+    url = "https://github.com/conan-community/conan-cmake-installer"
     author = "Conan Community"
     homepage = "https://github.com/Kitware/CMake"
     topics = ("conan", "cmake", "build", "installer")
