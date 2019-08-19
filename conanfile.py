@@ -112,8 +112,9 @@ class CMakeInstallerConan(ConanFile):
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["CMAKE_BOOTSTRAP"] = False
-        cmake.definitions["OPENSSL_USE_STATIC_LIBS"] = True
-        cmake.definitions["CMAKE_EXE_LINKER_FLAGS"] = "-lz"
+        if self.settings.os_build == "Linux":
+            cmake.definitions["OPENSSL_USE_STATIC_LIBS"] = True
+            cmake.definitions["CMAKE_EXE_LINKER_FLAGS"] = "-lz"
         cmake.configure(source_dir=self._source_subfolder)
         return cmake
 
