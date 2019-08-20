@@ -34,7 +34,9 @@ class CMakeInstallerConan(ConanFile):
     settings = "os_build", "arch_build", "compiler", "arch"
     options = {"version": available_versions}
     default_options = {"version": [v for v in available_versions if "-" not in v][0]}
+    generators = "cmake"
     exports = "LICENSE"
+    exports_sources = "CMakeLists.txt"
 
     @property
     def _source_subfolder(self):
@@ -75,6 +77,9 @@ class CMakeInstallerConan(ConanFile):
     def _build_from_source(self):
         return os.path.exists(os.path.join(self.build_folder, self._source_subfolder, "configure"))
 
+    def requirements(self):
+        self.requires("OpenSSL/1.0.2s@conan/stable")
+
     def config_options(self):
         if self.version >= Version("2.8"):  # Means CMake version
             del self.options.version
@@ -107,6 +112,9 @@ class CMakeInstallerConan(ConanFile):
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.definitions["CMAKE_BOOTSTRAP"] = False
+        if self.settings.os_build == "Linux":
+            cmake.definitions["OPENSSL_USE_STATIC_LIBS"] = True
+            cmake.definitions["CMAKE_EXE_LINKER_FLAGS"] = "-lz"
         cmake.configure(source_dir=self._source_subfolder)
         return cmake
 
