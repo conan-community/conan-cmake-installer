@@ -77,9 +77,6 @@ class CMakeInstallerConan(ConanFile):
     def _build_from_source(self):
         return os.path.exists(os.path.join(self.build_folder, self._source_subfolder, "configure"))
 
-    def requirements(self):
-        self.requires("OpenSSL/1.0.2s@conan/stable", private=True)
-
     def config_options(self):
         if self.version >= Version("2.8"):  # Means CMake version
             del self.options.version
