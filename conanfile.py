@@ -83,6 +83,8 @@ class CMakeInstallerConan(ConanFile):
             del self.options.version
 
     def configure(self):
+        self.output.warn("[DEPRECATED] Package cmake_installer/{0}@conan/stable is being deprecated. "
+                         "Change yours to require cmake/{0} instead".format(self.version))
         if self._os == "Macos" and self._arch == "x86":
             raise ConanInvalidConfiguration("Not supported x86 for OSx")
 
